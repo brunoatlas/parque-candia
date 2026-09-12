@@ -126,12 +126,12 @@
 
   /* ---------- Plantas ---------- */
   var PLANTAS = [
-    { tab: '26 m²', area: '26,14 m²',        type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg' },
-    { tab: '30 m²', area: 'até 30,88 m²',    type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg' },
-    { tab: '35 m²', area: '35,00 a 36,22 m²',type: '2 dormitórios',         detail: 'Com varanda',     image: 'assets/img/planta-35.jpg' },
-    { tab: '39 m²', area: '39,28 m²',        type: '1 dormitório + office', detail: 'Suíte e varanda', image: 'assets/img/planta-39.jpg' },
-    { tab: '41 m²', area: '41,60 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg' },
-    { tab: '43 m²', area: '43,35 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg' }
+    { tab: '26 m²', area: '26,14 m²',        type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg', w: 1500, h: 1374 },
+    { tab: '30 m²', area: 'até 30,88 m²',    type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg', w: 1500, h: 1374 },
+    { tab: '35 m²', area: '35,00 a 36,22 m²',type: '2 dormitórios',         detail: 'Com varanda',     image: 'assets/img/planta-35.jpg', w: 1500, h: 1193 },
+    { tab: '39 m²', area: '39,28 m²',        type: '1 dormitório + office', detail: 'Suíte e varanda', image: 'assets/img/planta-39.jpg', w: 1500, h: 1270 },
+    { tab: '41 m²', area: '41,60 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg', w: 1500, h: 1567 },
+    { tab: '43 m²', area: '43,35 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg', w: 1500, h: 1567 }
   ];
 
   var plantaIndex = 0;
@@ -145,6 +145,8 @@
     var p = PLANTAS[i];
     plantaIndex = i;
     plantaImg.src = p.image;
+    plantaImg.width = p.w;
+    plantaImg.height = p.h;
     plantaImg.alt = 'Planta de ' + p.area + ' do Parque Cândia';
     plantaImg.style.animation = 'none';
     void plantaImg.offsetWidth;
