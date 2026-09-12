@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.SEUDOMINIO.com.br/sitemap.xml
+Sitemap: https://parquecandiaapartamentos.com.br/sitemap.xml

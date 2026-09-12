@@ -12,8 +12,8 @@ Sem build, sem framework, sem dependência: é só enviar os arquivos.
 parque-candia-site/
 ├── index.html          página única (todas as seções)
 ├── favicon.png
-├── robots.txt          ← trocar SEUDOMINIO
-├── sitemap.xml         ← trocar SEUDOMINIO
+├── robots.txt
+├── sitemap.xml
 ├── integracao/
 │   ├── README-planilha.md   como ligar a planilha de leads
 │   └── apps-script.gs       código para colar no Google Apps Script
@@ -37,8 +37,8 @@ parque-candia-site/
 
 ## Antes de publicar — checklist
 
-1. **Domínio**: substituir `SEUDOMINIO.com.br` em `index.html` (canonical + Open Graph),
-   `robots.txt` e `sitemap.xml`.
+1. ~~**Domínio**: configurado como `parquecandiaapartamentos.com.br` em `index.html` (canonical + Open Graph),
+   `robots.txt` e `sitemap.xml`.~~ ✅
 2. **WhatsApp**: já configurado como `5511963055700` em `assets/js/main.js` (`CONFIG.whatsapp`).
 3. **Google Tag**: em `index.html`, trocar `G-XXXXXXXXXX` pelo ID do GA4 e,
    se for rodar Ads, descomentar a linha `gtag('config', 'AW-XXXXXXXXX')`.
