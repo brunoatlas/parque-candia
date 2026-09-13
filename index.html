@@ -28,16 +28,40 @@
 <script>document.documentElement.classList.add('js');</script>
 
 <!-- ============================================================
-     GOOGLE TAG (GA4 + Google Ads) — troque os IDs antes de subir
+     GOOGLE TAG (GA4 + Google Ads) — troque os IDs antes de subir.
+     Enquanto só existe GA4 + Ads, essa tag direta é suficiente e mais simples
+     de manter. Se no futuro entrar Meta Pixel, remarketing ou mais de 2-3
+     tags, troque este bloco pelo Google Tag Manager (snippet alternativo
+     logo abaixo, comentado) e mova essas configs para dentro do GTM.
      ============================================================ -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');   // GA4
-  // gtag('config', 'AW-XXXXXXXXX'); // Google Ads — descomente e troque o ID
+  gtag('config', 'G-XXXXXXXXXX');   // GA4 — troque pelo Measurement ID real (Admin → Fluxos de dados)
+  // gtag('config', 'AW-XXXXXXXXX'); // Google Ads — descomente e troque pelo Conversion ID
 </script>
+
+<!-- ============================================================
+     ALTERNATIVA: Google Tag Manager (use esse em vez do bloco acima
+     quando precisar organizar várias tags — GA4 + Ads + Meta Pixel).
+     1. Crie o container em tagmanager.google.com, copie o GTM-XXXXXXX.
+     2. Apague o bloco "GOOGLE TAG" acima.
+     3. Descomente as duas tags abaixo e troque GTM-XXXXXXX pelo seu ID
+        (a segunda vai logo depois de <body>, não aqui no <head>).
+     4. Dentro do GTM, crie as tags de GA4 Config, Google Ads e o que mais
+        precisar — os eventos deste site já chegam prontos no dataLayer
+        (view_plant, select_plant, simulator_start/step/complete, form_start,
+        form_submit, lead_generated, whatsapp_click, cta_click), então cada
+        tag no GTM só precisa de um Trigger de evento personalizado com o
+        nome do evento.
+     ============================================================
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+-->
+<!-- noscript do GTM (colar logo após <body>, junto com o script acima):
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+-->
 
 <script type="application/ld+json">
 {
@@ -80,7 +104,7 @@
 
     <header class="hero__header">
       <a href="#" class="logo" aria-label="Parque Cândia — início">
-        <img src="assets/img/logo.png" alt="Parque Cândia" width="900" height="261">
+        <img src="assets/img/logo.webp" alt="Parque Cândia" width="900" height="261">
       </a>
       <nav class="nav" aria-label="Navegação principal">
         <a href="#conceito">O empreendimento</a>
@@ -88,7 +112,7 @@
         <a href="#lazer">Lazer</a>
         <a href="#localizacao">Localização</a>
       </nav>
-      <button class="btn btn--ghost-light hero__cta" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de falar com você.">
+      <button class="btn btn--ghost-light hero__cta" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de falar com você." data-wa-loc="hero">
         Falar com Bruno
         <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.21-8.24 8.21Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
       </button>
@@ -111,11 +135,11 @@
       </ul>
 
       <div class="hero__actions rise rise--delay">
-        <a class="btn btn--primary btn--lg" href="#conceito" data-track="hero_cta_click" data-track-action="explorar">
+        <a class="btn btn--primary btn--lg" href="#conceito" data-track="cta_click" data-track-action="explorar">
           Explorar o Parque Cândia
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn btn--outline-light btn--lg" href="#simulador" data-track="hero_cta_click" data-track-action="simular">
+        <a class="btn btn--outline-light btn--lg" href="#simulador" data-track="cta_click" data-track-action="simular">
           Quero uma simulação
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -257,7 +281,7 @@
 
       <div class="planta">
         <div class="planta__img">
-          <img id="plantaImg" src="assets/img/planta-26.jpg" alt="Planta de 26,14 m² do Parque Cândia" width="1500" height="1374">
+          <img id="plantaImg" src="assets/img/planta-26.webp" alt="Planta de 26,14 m² do Parque Cândia" loading="lazy" width="1500" height="1374">
         </div>
         <div class="planta__info">
           <div>
@@ -283,7 +307,7 @@
     <div class="tabs tabs--outline reveal" role="tablist" aria-label="Áreas de lazer" id="lazerTabs"></div>
 
     <figure class="lazer reveal">
-      <img id="lazerImg" src="assets/img/piscina.jpg" alt="Piscina com borda infinita" loading="lazy" width="1250" height="704">
+      <img id="lazerImg" src="assets/img/piscina.webp" alt="Piscina com borda infinita" loading="lazy" width="1250" height="704">
       <figcaption class="lazer__caption">
         <p class="eyebrow eyebrow--accent eyebrow--sm" id="lazerCat">Lazer</p>
         <h3 class="display" id="lazerTitle">Piscina com borda infinita</h3>
@@ -343,7 +367,7 @@
         <p class="eyebrow">Atendimento pessoal</p>
         <h2 class="display h-xl">Prazer, sou Bruno.</h2>
         <p class="lead">Meu trabalho é entender o objetivo de cada cliente e apresentar as opções que realmente fazem sentido para o momento e planejamento de cada pessoa.</p>
-        <button class="btn btn--primary btn--lg" data-wa="Olá, Bruno! Vim pelo site do Parque Cândia e gostaria de conversar.">
+        <button class="btn btn--primary btn--lg" data-wa="Olá, Bruno! Vim pelo site do Parque Cândia e gostaria de conversar." data-wa-loc="bruno">
           Falar comigo
           <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.21-8.24 8.21Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
         </button>
@@ -370,7 +394,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div>
-        <img class="footer__logo" src="assets/img/logo.png" alt="Parque Cândia" width="900" height="261" loading="lazy">
+        <img class="footer__logo" src="assets/img/logo.webp" alt="Parque Cândia" width="900" height="261" loading="lazy">
         <p>Av. Vital Brasil, 318 — Butantã — São Paulo/SP</p>
       </div>
       <p class="footer__legal">As vendas serão realizadas após o registro do Memorial de Incorporação. Eventuais benefícios do Minha Casa Minha Vida dependem das regras e critérios aplicáveis. Imagens artísticas do empreendimento.</p>
@@ -378,13 +402,13 @@
   </footer>
 </main>
 
-<button class="wa-float" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação.">
+<button class="wa-float" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação." data-wa-loc="float">
   <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.21-8.24 8.21Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
   WhatsApp
 </button>
 
 <div class="mobile-bar">
-  <button class="btn btn--primary btn--block" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação.">
+  <button class="btn btn--primary btn--block" data-wa="Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação." data-wa-loc="mobile_bar">
     Falar com Bruno no WhatsApp
   </button>
 </div>

@@ -1,5 +1,13 @@
 /* ============================================================
    Parque Cândia — Butantã | interações
+
+   Eventos enviados ao dataLayer/GA4 (não duplicar — reusar estes nomes):
+   page_view, cta_click{action}, view_plant{plant,area}, select_plant{plant},
+   amenity_view{amenity}, morar_click, investment_click, faq_open{question},
+   simulator_start, simulator_step{step,field,value}, simulator_complete{objective},
+   form_start, form_submit, lead_generated{objective,property} (conversão principal),
+   whatsapp_click{location}. "scroll" não é enviado daqui: vem do Enhanced
+   Measurement do GA4 quando a propriedade real estiver configurada (Fase 2).
    ============================================================ */
 (function () {
   'use strict';
@@ -103,8 +111,8 @@
     });
   }
 
-  function openWhatsApp(msg) {
-    track('whatsapp_click');
+  function openWhatsApp(msg, loc) {
+    track('whatsapp_click', { location: loc || 'outro' });
     var text = encodeURIComponent(msg || 'Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação.');
     window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + text, '_blank', 'noopener,noreferrer');
   }
@@ -116,7 +124,9 @@
 
   /* ---------- Botões de WhatsApp e de tracking ---------- */
   document.querySelectorAll('[data-wa]').forEach(function (btn) {
-    btn.addEventListener('click', function () { openWhatsApp(btn.getAttribute('data-wa')); });
+    btn.addEventListener('click', function () {
+      openWhatsApp(btn.getAttribute('data-wa'), btn.getAttribute('data-wa-loc'));
+    });
   });
   document.querySelectorAll('[data-track]').forEach(function (el) {
     el.addEventListener('click', function () {
@@ -126,12 +136,12 @@
 
   /* ---------- Plantas ---------- */
   var PLANTAS = [
-    { tab: '26 m²', area: '26,14 m²',        type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg', w: 1500, h: 1374 },
-    { tab: '30 m²', area: 'até 30,88 m²',    type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.jpg', w: 1500, h: 1374 },
-    { tab: '35 m²', area: '35,00 a 36,22 m²',type: '2 dormitórios',         detail: 'Com varanda',     image: 'assets/img/planta-35.jpg', w: 1500, h: 1193 },
-    { tab: '39 m²', area: '39,28 m²',        type: '1 dormitório + office', detail: 'Suíte e varanda', image: 'assets/img/planta-39.jpg', w: 1500, h: 1270 },
-    { tab: '41 m²', area: '41,60 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg', w: 1500, h: 1567 },
-    { tab: '43 m²', area: '43,35 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.jpg', w: 1500, h: 1567 }
+    { tab: '26 m²', area: '26,14 m²',        type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.webp', w: 1500, h: 1374 },
+    { tab: '30 m²', area: 'até 30,88 m²',    type: '1 dormitório',          detail: 'Suíte e varanda', image: 'assets/img/planta-26.webp', w: 1500, h: 1374 },
+    { tab: '35 m²', area: '35,00 a 36,22 m²',type: '2 dormitórios',         detail: 'Com varanda',     image: 'assets/img/planta-35.webp', w: 1500, h: 1193 },
+    { tab: '39 m²', area: '39,28 m²',        type: '1 dormitório + office', detail: 'Suíte e varanda', image: 'assets/img/planta-39.webp', w: 1500, h: 1270 },
+    { tab: '41 m²', area: '41,60 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.webp', w: 1500, h: 1567 },
+    { tab: '43 m²', area: '43,35 m²',        type: '2 dormitórios',         detail: 'Suíte e varanda', image: 'assets/img/planta-42.webp', w: 1500, h: 1567 }
   ];
 
   var plantaIndex = 0;
@@ -158,6 +168,7 @@
       b.classList.toggle('is-active', idx === i);
       b.setAttribute('aria-selected', idx === i ? 'true' : 'false');
     });
+    track('view_plant', { plant: p.tab, area: p.area });
   }
 
   if (plantaTabs) {
@@ -170,7 +181,7 @@
       b.textContent = p.tab;
       b.addEventListener('click', function () {
         renderPlanta(i);
-        track('plant_select', { plant: p.tab });
+        track('select_plant', { plant: p.tab });
       });
       plantaTabs.appendChild(b);
     });
@@ -181,19 +192,19 @@
   if (plantaCta) {
     plantaCta.addEventListener('click', function () {
       answers.property = PLANTAS[plantaIndex].type;
-      track('plant_cta_click', { plant: PLANTAS[plantaIndex].tab });
+      track('cta_click', { action: 'ver_planta', plant: PLANTAS[plantaIndex].tab });
       scrollToId('simulador');
     });
   }
 
   /* ---------- Lazer ---------- */
   var LAZER = [
-    { category: 'Lazer',       title: 'Piscina com borda infinita', image: 'assets/img/piscina.jpg' },
-    { category: 'Bem-estar',   title: 'Fitness',                    image: 'assets/img/fitness.jpg' },
+    { category: 'Lazer',       title: 'Piscina com borda infinita', image: 'assets/img/piscina.webp' },
+    { category: 'Bem-estar',   title: 'Fitness',                    image: 'assets/img/fitness.webp' },
     { category: 'Esportes',    title: 'Quadra poliesportiva',       image: 'assets/img/quadra.jpg' },
-    { category: 'Convivência', title: 'Espaço gourmet',             image: 'assets/img/gourmet.jpg' },
-    { category: 'Praticidade', title: 'Coworking',                  image: 'assets/img/coworking.jpg' },
-    { category: 'Rooftop',     title: 'Mirante no rooftop',         image: 'assets/img/rooftop.jpg' }
+    { category: 'Convivência', title: 'Espaço gourmet',             image: 'assets/img/gourmet.webp' },
+    { category: 'Praticidade', title: 'Coworking',                  image: 'assets/img/coworking.webp' },
+    { category: 'Rooftop',     title: 'Mirante no rooftop',         image: 'assets/img/rooftop.webp' }
   ];
 
   var lazerTabs = document.getElementById('lazerTabs');
@@ -291,7 +302,10 @@
   quiz && quiz.querySelectorAll('.opt').forEach(function (opt) {
     opt.addEventListener('click', function () {
       if (step === 0) track('simulator_start');
-      answers[opt.getAttribute('data-field')] = opt.getAttribute('data-value');
+      var field = opt.getAttribute('data-field');
+      var value = opt.getAttribute('data-value');
+      answers[field] = value;
+      track('simulator_step', { step: step + 1, field: field, value: value });
       setTimeout(function () { step = Math.min(step + 1, 3); renderStep(); }, 160);
     });
   });
@@ -311,6 +325,15 @@
 
   var leadForm = document.getElementById('leadForm');
   if (leadForm) {
+    var formStarted = false;
+    leadForm.querySelectorAll('input').forEach(function (input) {
+      input.addEventListener('focus', function () {
+        if (formStarted) return;
+        formStarted = true;
+        track('form_start');
+      });
+    });
+
     leadForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var nome = document.getElementById('leadNome').value.trim();
@@ -343,14 +366,15 @@
       // formulário e não clica em "Falar pelo WhatsApp" também é registrado.
       enviarLead(payload);
 
+      track('form_submit');
       track('simulator_complete', { objective: answers.objective });
-      track('lead_submit', { objective: answers.objective, property: answers.property });
+      track('lead_generated', { objective: answers.objective, property: answers.property });
       trackConversion();
 
       quiz.hidden = true;
       quizDone.hidden = false;
       document.getElementById('quizDoneTitle').textContent = 'Perfeito, ' + nome.split(' ')[0] + '.';
-      document.getElementById('quizWa').onclick = function () { openWhatsApp(waMessage(nome)); };
+      document.getElementById('quizWa').onclick = function () { openWhatsApp(waMessage(nome), 'quiz_result'); };
       quizDone.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
