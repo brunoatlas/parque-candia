@@ -19,7 +19,9 @@
     // É o que grava o lead na planilha. Vazio = o lead só segue pelo WhatsApp.
     // Passo a passo em integracao/README-planilha.md
     leadEndpoint: '',
-    adsConversionLabel: ''               // ex.: 'AW-123456789/AbC-D_efGh' para conversão do Google Ads
+    // Conversões do Google Ads (conta "Parque Cândia", criada em 2026-09-13).
+    adsConversionLabel: 'AW-18448807803/EQC6CMjRtPYcEPvuid1E',        // Enviar formulário de lead (principal)
+    adsConversionLabelWhatsapp: 'AW-18448807803/EMdoCMvRtPYcEPvuid1E' // Contato via WhatsApp (secundária)
   };
 
   /* ---------- Analytics ---------- */
@@ -29,9 +31,9 @@
     window.dataLayer.push(Object.assign({ event: name }, params));
     if (typeof window.gtag === 'function') window.gtag('event', name, params);
   }
-  function trackConversion() {
-    if (CONFIG.adsConversionLabel && typeof window.gtag === 'function') {
-      window.gtag('event', 'conversion', { send_to: CONFIG.adsConversionLabel });
+  function trackConversion(label) {
+    if (label && typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', { send_to: label });
     }
   }
 
@@ -113,6 +115,7 @@
 
   function openWhatsApp(msg, loc) {
     track('whatsapp_click', { location: loc || 'outro' });
+    trackConversion(CONFIG.adsConversionLabelWhatsapp);
     var text = encodeURIComponent(msg || 'Olá! Vim pelo site do Parque Cândia e gostaria de receber uma simulação.');
     window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + text, '_blank', 'noopener,noreferrer');
   }
@@ -369,7 +372,7 @@
       track('form_submit');
       track('simulator_complete', { objective: answers.objective });
       track('lead_generated', { objective: answers.objective, property: answers.property });
-      trackConversion();
+      trackConversion(CONFIG.adsConversionLabel);
 
       quiz.hidden = true;
       quizDone.hidden = false;
